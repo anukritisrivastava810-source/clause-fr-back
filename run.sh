@@ -5,13 +5,13 @@ echo "Starting Backend and Frontend for Legal Document Simplifier..."
 cd backend
 source venv/bin/activate
 export PYTHONPATH=.
-uvicorn main:app --reload --port 8080 &
+uvicorn main:app --reload --port 8080 --host 0.0.0.0 &
 BACKEND_PID=$!
 cd ..
 
 # Start Frontend
 cd frontend
-export PATH=/opt/homebrew/bin:$PATH
+export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 npm run dev &
 FRONTEND_PID=$!
 cd ..

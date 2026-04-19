@@ -39,3 +39,29 @@ class DocumentResponse(DocumentBase):
 class UploadResponse(BaseModel):
     message: str
     document_id: str
+
+
+# ---------------------------------------------------------------------------
+# Simulator schemas — "What Happens If…" engine
+# ---------------------------------------------------------------------------
+
+class SimulationImpact(BaseModel):
+    financial: str
+    legal: str
+    user_effect: str
+
+
+class ClauseSimulation(BaseModel):
+    clause_id: int
+    clause: str
+    simplified: str
+    risk_level: str
+    category: str
+    scenario: str
+    timeline: List[str]
+    impact: SimulationImpact
+    severity_score: float
+
+
+class SimulateResponse(BaseModel):
+    simulations: List[ClauseSimulation]

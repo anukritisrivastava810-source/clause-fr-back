@@ -27,7 +27,7 @@ def analyze_clause_with_ai(clause_text: str, page_index_context: str = "Unknown 
     """
     setup_ai()
     try:
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-1.5-flash-002")
         
         user_prompt = CLAUSE_ANALYSIS_PROMPT.format(
             PAGE_INDEX_CONTEXT=page_index_context,
@@ -42,7 +42,12 @@ def analyze_clause_with_ai(clause_text: str, page_index_context: str = "Unknown 
         return parsed
         
     except Exception as e:
-        print(f"AI error falling back to dummy: {e}")
+        err_msg = str(e)
+        if "API key was reported as leaked" in err_msg:
+            print("\n❌ CRITICAL ERROR: YOUR GEMINI API KEY HAS BEEN REPORTED AS LEAKED AND IS BLOCKED BY GOOGLE.")
+            print("Please generate a new API key at https://aistudio.google.com/ and update your .env file.\n")
+        else:
+            print(f"AI error falling back to dummy: {e}")
         return {
             "simplified_text": "Failed to analyze clause automatically.",
             "risk_level": "low",

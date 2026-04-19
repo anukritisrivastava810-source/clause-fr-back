@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import models
 from database import engine
-from routers import analyze, documents
+from routers import analyze, documents, simulate
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
@@ -25,6 +25,7 @@ app.add_middleware(
 # Include routers
 app.include_router(analyze.router, prefix="/api", tags=["Analyze"])
 app.include_router(documents.router, prefix="/api", tags=["Documents"])
+app.include_router(simulate.router, prefix="/api", tags=["Simulate"])
 
 @app.get("/health")
 def health_check():
