@@ -1,0 +1,31 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import models
+from database import engine
+from routers import analyze, documents
+
+# Create database tables
+models.Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="Legal Document Simplifier API",
+    description="API for processing, simplifying, and analyzing risk in legal documents.",
+    version="1.0.0"
+)
+
+# Allow CORS for Next.js frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include routers
+app.include_router(analyze.router, prefix="/api", tags=["Analyze"])
+app.include_router(documents.router, prefix="/api", tags=["Documents"])
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
