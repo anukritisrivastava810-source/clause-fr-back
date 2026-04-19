@@ -40,7 +40,7 @@ def parse_document_to_index(file_bytes: bytes, filename: str) -> list[dict]:
                 continue
             
             # If it's a heading style, update context
-            if "Heading" in para.style.name:
+            if getattr(para.style, "name", None) and "Heading" in para.style.name:
                 current_heading = text
                 continue
                 

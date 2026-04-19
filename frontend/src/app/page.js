@@ -37,13 +37,13 @@ export default function Home() {
 
     try {
       // 1. Upload and trigger analysis
-      const uploadRes = await axios.post("http://localhost:8000/api/analyze", formData, {
+      const uploadRes = await axios.post("http://localhost:8080/api/analyze", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       const docId = uploadRes.data.document_id;
 
       // 2. Poll for results (assuming sync for simplicity based on our backend, but we'll fetch ID)
-      const res = await axios.get(`http://localhost:8000/api/documents/${docId}`);
+      const res = await axios.get(`http://localhost:8080/api/documents/${docId}`);
       setResults(res.data);
       setAppState("results");
     } catch (err) {

@@ -5,7 +5,7 @@ echo "Starting Backend and Frontend for Legal Document Simplifier..."
 cd backend
 source venv/bin/activate
 export PYTHONPATH=.
-uvicorn main:app --reload --port 8000 &
+uvicorn main:app --reload --port 8080 &
 BACKEND_PID=$!
 cd ..
 
@@ -16,10 +16,10 @@ npm run dev &
 FRONTEND_PID=$!
 cd ..
 
-echo "Backend running on http://localhost:8000"
+echo "Backend running on http://localhost:8080"
 echo "Frontend running on http://localhost:3000"
 
-# Wait for process exit, then kill both
-wait -n
-kill $BACKEND_PID
-kill $FRONTEND_PID
+# Wait for processes, keep script alive
+wait
+kill $BACKEND_PID 2>/dev/null
+kill $FRONTEND_PID 2>/dev/null

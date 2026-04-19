@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, Depends
+from fastapi import APIRouter, File, UploadFile, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 import models
@@ -16,7 +16,10 @@ async def analyze_document(file: UploadFile = File(...), db: Session = Depends(g
     file_bytes = await file.read()
     
     # 2. Extract structured clauses (PageIndex Vectorless RAG)
-    structural_clauses = document_parser.parse_document_to_index(file_bytes, file.filename)
+    try:
+        structural_clauses = document_parser.parse_document_to_index(file_bytes, file.filename)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     
     # Create document record
     doc_id = str(uuid.uuid4())

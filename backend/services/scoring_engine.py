@@ -16,7 +16,11 @@ def merge_risk_evaluations(rule_result: dict, ai_result: dict) -> dict:
     if risk_weights.get(rule_level, 0) > risk_weights.get(ai_level, 0):
         final_level = rule_level
         
-    final_score = ai_result.get("risk_score", 0.0)
+    try:
+        final_score = float(ai_result.get("risk_score", 0.0))
+    except (ValueError, TypeError):
+        final_score = 0.0
+        
     if final_level == "high" and final_score < 7.0:
         final_score = 8.5 # bumped by rules
         
