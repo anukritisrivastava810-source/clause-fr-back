@@ -5,7 +5,9 @@ from database import engine
 from routers import analyze, documents, simulate
 
 # Create database tables
-models.Base.metadata.create_all(bind=engine)
+@app.on_event("startup")
+def startup():
+    models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Legal Document Simplifier API",
